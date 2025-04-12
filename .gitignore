@@ -1,0 +1,21 @@
+## Build results
+bin/
+obj/
+
+## ASP.NET Core
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+appsettings.Local.json
+secrets.json
+
+## EF Core migrations (if desired to exclude snapshots)
+Migrations/
+
+## Database files
+*.db
+*.mdf
+*.ldf
+
+## Logs
+*.log

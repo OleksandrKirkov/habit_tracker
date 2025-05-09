@@ -9,7 +9,7 @@ public class HabitLogRepository : Repository<HabitLog>, IHabitLogRepository
 {
     public HabitLogRepository(AppDbContext context) : base(context) { }
 
-    public async Task<IEnumerable<HabitLog>> GetByHabitAndDateAsync(Guid habitId, DateTime date)
+    public async Task<HabitLog?> GetByHabitAndDateAsync(Guid habitId, DateTime date)
     {
         return await _context.HabitLogs
             .FirstOrDefaultAsync(c => c.HabitId == habitId && c.LogDate == date.Date);

@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories
     {
         public AchievementRepository(AppDbContext context) : base(context) { }
 
-        public async Task<Achievement> GetByCodeAsync(string code)
+        public async Task<Achievement?> GetByCodeAsync(string code)
         {
             return await _context.Achievements
                 .FirstOrDefaultAsync(a => a.Code == code);

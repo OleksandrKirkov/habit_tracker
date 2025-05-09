@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class IntegrationRepository : Repository<Achievement>, IIntegrationRepository
+    public class IntegrationRepository : Repository<Integration>, IIntegrationRepository
     {
         public IntegrationRepository(AppDbContext context) : base(context) { }
 
@@ -16,7 +16,7 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Integration> GetByUserAndProviderAsync(Guid userId, string provider)
+        public async Task<Integration?> GetByUserAndProviderAsync(Guid userId, string provider)
         {
             return await _context.Integrations
                 .FirstOrDefaultAsync(i => i.UserId == userId && i.Provider == provider);

@@ -2,14 +2,14 @@ namespace Core.Interfaces;
 
 public interface IUnitOfWork : IDisposable
 {
-    IUserRepository User { get; }
-    IHabitRepository Habit { get; }
-    IHabitLogRepository HabitLog { get; }
+    IUserRepository Users { get; }
+    IHabitRepository Habits { get; }
+    IHabitLogRepository HabitLogs { get; }
 
-    IAchievementRepository Achievement { get; }
-    IUserAchievementRepository UserAchievement { get; }
-    ISyncBackupRepository SyncBackup { get; }
-    IIntegrationRepository Integration { get; }
+    IAchievementRepository Achievements { get; }
+    IUserAchievementRepository UserAchievements { get; }
+    ISyncBackupRepository SyncBackups { get; }
+    IIntegrationRepository Integrations { get; }
 
     Task<int> CompleteAsync();
 }

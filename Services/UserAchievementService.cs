@@ -26,7 +26,7 @@ public class UserAchievementService : IUserAchievementService
     public async Task<UserAcievement> AssignAsync(Guid userId, Guid achievementId)
     {
         var exists = await _uow.UserAchievement.ExistsAsync(userId, achievementId);
-        if (exists) return null;
+        if (exists) return null!;
 
         var entity = new UserAcievement
         {

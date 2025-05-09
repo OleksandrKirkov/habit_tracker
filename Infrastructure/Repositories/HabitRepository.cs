@@ -16,7 +16,7 @@ public class HabitRepository : Repository<Habit>, IHabitRepository
             .ToListAsync();
     }
 
-    public async Task<Habit> GetByIdWithLogsAsync(Guid id)
+    public async Task<Habit?> GetByIdWithLogsAsync(Guid id)
     {
         return await _context.Habits
             .Include(h => h.HabitLogs)

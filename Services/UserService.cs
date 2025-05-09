@@ -25,7 +25,7 @@ public class UserService : IUserService
         return await _uow.User.GetByEmailAsync(email);
     }
 
-    public async Task<User> GetByIdAsync(Guid id)
+    public async Task<User?> GetByIdAsync(Guid id)
     {
         return await _uow.User.GetByIdAsync(id);
     }

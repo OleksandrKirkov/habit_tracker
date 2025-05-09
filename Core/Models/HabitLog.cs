@@ -12,7 +12,7 @@ namespace Core.Models
         public Guid HabitId { get; set; }
 
         [ForeignKey(nameof(HabitId))]
-        public Habits Habits { get; set; }
+        public Habit Habit { get; set; }
 
         [Required]
         [Column(TypeName = "date")]

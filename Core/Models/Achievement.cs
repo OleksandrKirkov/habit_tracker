@@ -18,5 +18,7 @@ namespace Core.Models
         public string Icon { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public ICollection<UserAcievement> UserAcievements { get; set; } = new List<UserAcievement>();
     }
 }

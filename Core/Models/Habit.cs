@@ -1,14 +1,60 @@
-namespace Core.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class Habit
+namespace Core.Models
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string Description { get; set; } = null!;
-    public string Frequency { get; set; } = "daily";
+    public class Habit
+    {
+        [Key]
+        public Guid Id { get; set; }
 
-    public int UserId { get; set; }
-    public User User { get; set; } = null!;
+        [Required]
+        public Guid UserId { get; set; }
 
-    public ICollection<HabitCheckin> Checkins { get; set; } = new List<HabitCheckin>();
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; }
+
+        [Required]
+        public string Title { get; set; }
+
+        public string Color { get; set; } = "#000000";
+
+        public string Icon { get; set; }
+
+        [Required]
+        [Range(1, 7)]
+        public short Frequency { get; set; }
+
+        [Required]
+        [EnumDataType(typeof(HabitType))]
+        public string Type { get; set; }
+
+        [Column(TypeName = "time")]
+        public TimeSpan? ReminderTime { get; set; }
+
+        [EnumDataType(typeof(ReminderMode))]
+        public string ReminderMode { get; set; }
+
+        public bool IsArchived { get; set; } = false;
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        public ICollection<HabitLog> HabitLogs { get; set; } = new List<HabitLog>();
+    }
+
+    public enum HabitType
+    {
+        binary,
+        duration,
+        counter
+    }
+
+    public enum ReminderMode
+    {
+        once,
+        daily,
+        weekly
+    }
 }

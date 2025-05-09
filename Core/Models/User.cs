@@ -1,9 +1,33 @@
-namespace Core.Models;
+using System.ComponentModel.DataAnnotations;
 
-public class User
+namespace Core.Models
 {
-    public int Id { get; set; }
-    public string Username { get; set; } = null!;
+    public class User
+    {
+        [Key]
+        public Guid Id { get; set; }
 
-    public ICollection<Habit> Habits { get; set; } = new List<Habit>();
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        public string PasswordHash { get; set; }
+
+        public string Name { get; set; }
+
+        public string AvatarUrl { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        public ICollection<Habit> Habits { get; set; } = new List<Habit>();
+
+        public ICollection<UserAcievement> UserAcievements { get; set; } = new List<UserAcievement>();
+
+        public ICollection<SyncBackup> SyncBackups { get; set; } = new List<SyncBackup>();
+
+        public ICollection<Integration> Integrations { get; set; } = new List<Integration>();
+    }
 }

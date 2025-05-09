@@ -2,7 +2,8 @@ using Core.Models;
 
 namespace Core.Interfaces;
 
-public interface IUserRepository : IRepository<User>
+public interface IUserRepository : IRepository<Users>
 {
-    Task<User?> GetByUsernameAsync(string username);
+    Task<Users> GetByEmailAsync(string email);
+    Task<bool> EmailExistsAsync(string email);
 }

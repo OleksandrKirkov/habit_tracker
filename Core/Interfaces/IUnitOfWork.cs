@@ -4,7 +4,12 @@ public interface IUnitOfWork : IDisposable
 {
     IUserRepository Users { get; }
     IHabitRepository Habits { get; }
-    IHabitCheckinRepository HabitCheckins { get; }
+    IHabitLogsRepository HabitLogs { get; }
+
+    IAchievementRepository Achievement { get; }
+    IUserAchievementRepository UserAchievement { get; }
+    ISyncBackupRepository SyncBackup { get; }
+    IIntegrationRepository Integration { get; }
 
     Task<int> CompleteAsync();
 }

@@ -3,31 +3,47 @@ using Core.Models;
 
 namespace Services;
 
-public class HabitService
+public interface IHabitService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    Task<IEnumerable<Habit>> GetHabitsByUserAsync(Guid userId);
+    Task<Habit> GetByIdWithLogsAsync(Guid id);
+    Task<Habit> CreateHabitAsync(Habit habit);
+    Task ArchiveHabitAsync(Guid id);
+}
 
-    public HabitService(IUnitOfWork unitOfWork)
+public class HabitService : IHabitService
+{
+    private readonly IUnitOfWork _uow;
+
+    public HabitService(IUnitOfWork uow)
     {
-        _unitOfWork = unitOfWork;
+        _uow = uow;
     }
-    public async Task<Habit> CreateHabitAsync(int userId, string name, string description, string frequency)
-    {
-        var habit = new Habit
-        {
-            UserId = userId,
-            Name = name,
-            Description = description,
-            Frequency = frequency
-        };
-        await _unitOfWork.Habits.AddAsync(habit);
-        await _unitOfWork.CompleteAsync();
 
+    public async Task<IEnumerable<Habit>> GetHabitsByUserAsync(Guid userId)
+    {
+        return await _uow.Habit.GetHabitsByUserAsync(userId);
+    }
+
+    public async Task<Habit> GetByIdWithLogsAsync(Guid id)
+    {
+        return await _uow.Habit.GetByIdWithLogsAsync(id);
+    }
+
+    public async Task<Habit> CreateHabitAsync(Habit habit)
+    {
+        await _uow.Habit.AddAsync(habit);
+        await _uow.CompleteAsync();
         return habit;
     }
 
-    public async Task<Habit?> GetHabitWithCheckinsAsync(int habitId)
+    public async Task ArchiveHabitAsync(Guid id)
     {
-        return await _unitOfWork.Habits.GetWithCheckinsAsync(habitId);
+        var habit = await _uow.Habit.GetByIdAsync(id);
+        if (habit == null) return;
+
+        habit.IsArchived = true;
+        _uow.Habit.Update(habit);
+        await _uow.CompleteAsync();
     }
 }

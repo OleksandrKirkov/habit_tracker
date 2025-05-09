@@ -10,14 +10,25 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(AppDbContext context)
     {
         _context = context;
+
         Users = new UserRepository(_context);
         Habits = new HabitRepository(_context);
-        HabitCheckins = new HabitCheckinRepository(_context);
+        HabitLogs = new HabitLogRepository(_context);
+
+        Achievements = new AchievementRepository(_context);
+        UserAchievements = new UserAchievementRepository(_context);
+        SyncBackups = new SyncBackupRepository(_context);
+        Integrations = new IntegrationRepository(_context);
     }
 
     public IUserRepository Users { get; }
     public IHabitRepository Habits { get; }
-    public IHabitCheckinRepository HabitCheckins { get; }
+    public IHabitLogRepository HabitLogs { get; }
+
+    public IAchievementRepository Achievements { get; }
+    public IUserAchievementRepository UserAchievements { get; }
+    public ISyncBackupRepository SyncBackups { get; }
+    public IIntegrationRepository Integrations { get; }
 
     public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();
 

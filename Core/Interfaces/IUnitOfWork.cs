@@ -2,9 +2,9 @@ namespace Core.Interfaces;
 
 public interface IUnitOfWork : IDisposable
 {
-    IUserRepository Users { get; }
-    IHabitRepository Habits { get; }
-    IHabitLogsRepository HabitLogs { get; }
+    IUserRepository User { get; }
+    IHabitRepository Habit { get; }
+    IHabitLogRepository HabitLog { get; }
 
     IAchievementRepository Achievement { get; }
     IUserAchievementRepository UserAchievement { get; }

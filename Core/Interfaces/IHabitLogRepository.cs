@@ -2,7 +2,7 @@ using Core.Models;
 
 namespace Core.Interfaces;
 
-public interface IHabitLogsRepository : IRepository<HabitLog>
+public interface IHabitLogRepository : IRepository<HabitLog>
 {
     Task<HabitLog> GetByHabitAndDateAsync(Guid habitId, DateTime date);
     Task<IEnumerable<HabitLog>> GetByHabitAsync(Guid habitId);

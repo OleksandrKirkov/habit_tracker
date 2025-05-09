@@ -3,26 +3,42 @@ using Core.Models;
 
 namespace Services;
 
-public class UserService
+public interface IUserService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    Task<User> GetByEmailAsync(string email);
+    Task<User> GetByIdAsync(Guid id);
+    Task<bool> EmailExistsAsync(string email);
+    Task<User> CreateUserAsync(User user);
+}
 
-    public UserService(IUnitOfWork unitOfWork)
+public class UserService : IUserService
+{
+    private readonly IUnitOfWork _uow;
+
+    public UserService(IUnitOfWork uow)
     {
-        _unitOfWork = unitOfWork;
+        _uow = uow;
     }
 
-    public async Task<User> CreateUserAsync(string username)
+    public async Task<User> GetByEmailAsync(string email)
     {
-        var user = new User { Username = username };
-        await _unitOfWork.Users.AddAsync(user);
-        await _unitOfWork.CompleteAsync();
+        return await _uow.User.GetByEmailAsync(email);
+    }
+
+    public async Task<User> GetByIdAsync(Guid id)
+    {
+        return await _uow.User.GetByIdAsync(id);
+    }
+
+    public async Task<bool> EmailExistsAsync(string email)
+    {
+        return await _uow.User.EmailExistsAsync(email);
+    }
+
+    public async Task<User> CreateUserAsync(User user)
+    {
+        await _uow.User.AddAsync(user);
+        await _uow.CompleteAsync();
         return user;
-    }
-
-    public async Task<IEnumerable<Habit>> GetUserHabitsAsync(int userId)
-    {
-        var user = await _unitOfWork.Users.GetByIdAsync(userId);
-        return user?.Habits ?? new List<Habit>();
     }
 }

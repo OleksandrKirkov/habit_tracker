@@ -21,17 +21,17 @@ public class AchievementService : IAchievementService
 
     public async Task<IEnumerable<Achievement>> GetAllAsync()
     {
-        return await _uow.Achievement.GetAllAsync();
+        return await _uow.Achievements.GetAllAsync();
     }
 
     public async Task<Achievement> GetByCodeAsync(string code)
     {
-        return await _uow.Achievement.GetByCodeAsync(code);
+        return await _uow.Achievements.GetByCodeAsync(code);
     }
 
     public async Task<Achievement> CreateAsync(Achievement achievement)
     {
-        await _uow.Achievement.AddAsync(achievement);
+        await _uow.Achievements.AddAsync(achievement);
         await _uow.CompleteAsync();
         return achievement;
     }

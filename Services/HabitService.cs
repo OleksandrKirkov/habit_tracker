@@ -1,3 +1,4 @@
+using Core.DTO.Habits;
 using Core.Interfaces;
 using Core.Models;
 
@@ -7,7 +8,7 @@ public interface IHabitService
 {
     Task<IEnumerable<Habit>> GetHabitsByUserAsync(Guid userId);
     Task<Habit> GetByIdWithLogsAsync(Guid id);
-    Task<Habit> CreateHabitAsync(Habit habit);
+    Task<Habit> CreateHabitAsync(CreateHabitRequest request);
     Task ArchiveHabitAsync(Guid id);
 }
 
@@ -22,28 +23,43 @@ public class HabitService : IHabitService
 
     public async Task<IEnumerable<Habit>> GetHabitsByUserAsync(Guid userId)
     {
-        return await _uow.Habit.GetHabitsByUserAsync(userId);
+        return await _uow.Habits.GetHabitsByUserAsync(userId);
     }
 
     public async Task<Habit> GetByIdWithLogsAsync(Guid id)
     {
-        return await _uow.Habit.GetByIdWithLogsAsync(id);
+        return await _uow.Habits.GetByIdWithLogsAsync(id);
     }
 
-    public async Task<Habit> CreateHabitAsync(Habit habit)
+    public async Task<Habit> CreateHabitAsync(CreateHabitRequest request)
     {
-        await _uow.Habit.AddAsync(habit);
+        var habit = new Habit
+        {
+            Id = Guid.NewGuid(),
+            UserId = request.UserId,
+            Title = request.Title,
+            Color = request.Color,
+            Icon = request.Icon,
+            Frequency = request.Frequency,
+            Type = request.Type,
+            ReminderTime = request.ReminderTime,
+            ReminderMode = request.ReminderMode,
+            CreatedAt = DateTime.UtcNow,
+            IsArchived = false
+        };
+
+        await _uow.Habits.AddAsync(habit);
         await _uow.CompleteAsync();
         return habit;
     }
 
     public async Task ArchiveHabitAsync(Guid id)
     {
-        var habit = await _uow.Habit.GetByIdAsync(id);
+        var habit = await _uow.Habits.GetByIdAsync(id);
         if (habit == null) return;
 
         habit.IsArchived = true;
-        _uow.Habit.Update(habit);
+        _uow.Habits.Update(habit);
         await _uow.CompleteAsync();
     }
 }

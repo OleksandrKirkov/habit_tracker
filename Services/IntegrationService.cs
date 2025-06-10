@@ -21,17 +21,17 @@ public class IntegrationService : IIntegrationService
 
     public async Task<IEnumerable<Integration>> GetByUserAsync(Guid userId)
     {
-        return await _uow.Integration.GetByUserAsync(userId);
+        return await _uow.Integrations.GetByUserAsync(userId);
     }
 
     public async Task<Integration> GetByProviderAsync(Guid userId, string provider)
     {
-        return await _uow.Integration.GetByUserAndProviderAsync(userId, provider);
+        return await _uow.Integrations.GetByUserAndProviderAsync(userId, provider);
     }
 
     public async Task<Integration> CreateAsync(Integration integration)
     {
-        await _uow.Integration.AddAsync(integration);
+        await _uow.Integrations.AddAsync(integration);
         await _uow.CompleteAsync();
         return integration;
     }

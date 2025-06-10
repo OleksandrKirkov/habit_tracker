@@ -20,12 +20,12 @@ public class SyncBackupService : ISyncBackupService
 
     public async Task<IEnumerable<SyncBackup>> GetByUserAsync(Guid userId)
     {
-        return await _uow.SyncBackup.GetByUserAsync(userId);
+        return await _uow.SyncBackups.GetByUserAsync(userId);
     }
 
     public async Task<SyncBackup> CreateAsync(SyncBackup backup)
     {
-        await _uow.SyncBackup.AddAsync(backup);
+        await _uow.SyncBackups.AddAsync(backup);
         await _uow.CompleteAsync();
         return backup;
     }

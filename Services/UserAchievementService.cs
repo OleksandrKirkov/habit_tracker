@@ -20,12 +20,12 @@ public class UserAchievementService : IUserAchievementService
 
     public async Task<IEnumerable<UserAcievement>> GetByUserAsync(Guid userId)
     {
-        return await _uow.UserAchievement.GetByUserAsync(userId);
+        return await _uow.UserAchievements.GetByUserAsync(userId);
     }
 
     public async Task<UserAcievement> AssignAsync(Guid userId, Guid achievementId)
     {
-        var exists = await _uow.UserAchievement.ExistsAsync(userId, achievementId);
+        var exists = await _uow.UserAchievements.ExistsAsync(userId, achievementId);
         if (exists) return null!;
 
         var entity = new UserAcievement
@@ -36,7 +36,7 @@ public class UserAchievementService : IUserAchievementService
             UnlockedAt = DateTime.UtcNow
         };
 
-        await _uow.UserAchievement.AddAsync(entity);
+        await _uow.UserAchievements.AddAsync(entity);
         await _uow.CompleteAsync();
         return entity;
     }

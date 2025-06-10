@@ -21,12 +21,12 @@ public class HabitLogService : IHabitLogService
 
     public async Task<IEnumerable<HabitLog>> GetLogsByHabitAsync(Guid habitId)
     {
-        return await _uow.HabitLog.GetByHabitAsync(habitId);
+        return await _uow.HabitLogs.GetByHabitAsync(habitId);
     }
 
     public async Task<HabitLog> LogAsync(Guid habitId, DateTime date, int? value)
     {
-        var existing = await _uow.HabitLog.GetByHabitAndDateAsync(habitId, date);
+        var existing = await _uow.HabitLogs.GetByHabitAndDateAsync(habitId, date);
         if (existing != null) return existing;
 
         var log = new HabitLog
@@ -38,7 +38,7 @@ public class HabitLogService : IHabitLogService
             CreateAt = DateTime.UtcNow
         };
 
-        await _uow.HabitLog.AddAsync(log);
+        await _uow.HabitLogs.AddAsync(log);
         await _uow.CompleteAsync();
 
         return log;
@@ -46,7 +46,7 @@ public class HabitLogService : IHabitLogService
 
     public async Task<bool> AlreadyLoggedAsync(Guid habitId, DateTime date)
     {
-        var existing = await _uow.HabitLog.GetByHabitAndDateAsync(habitId, date);
+        var existing = await _uow.HabitLogs.GetByHabitAndDateAsync(habitId, date);
         return existing != null;
     }
 }

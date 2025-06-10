@@ -22,22 +22,22 @@ public class UserService : IUserService
 
     public async Task<User> GetByEmailAsync(string email)
     {
-        return await _uow.User.GetByEmailAsync(email);
+        return await _uow.Users.GetByEmailAsync(email);
     }
 
     public async Task<User?> GetByIdAsync(Guid id)
     {
-        return await _uow.User.GetByIdAsync(id);
+        return await _uow.Users.GetByIdAsync(id);
     }
 
     public async Task<bool> EmailExistsAsync(string email)
     {
-        return await _uow.User.EmailExistsAsync(email);
+        return await _uow.Users.EmailExistsAsync(email);
     }
 
     public async Task<User> CreateUserAsync(User user)
     {
-        await _uow.User.AddAsync(user);
+        await _uow.Users.AddAsync(user);
         await _uow.CompleteAsync();
         return user;
     }

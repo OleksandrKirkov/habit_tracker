@@ -1,7 +1,7 @@
+using System.Linq.Expressions;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories;
 
@@ -14,7 +14,7 @@ public class Repository<T> : IRepository<T> where T : class
         _context = context;
     }
 
-    public async Task<T?> GetByIdAsync(int id) =>
+    public async Task<T?> GetByIdAsync(Guid id) =>
         await _context.Set<T>().FindAsync(id);
 
     public async Task<IEnumerable<T>> GetAllAsync() =>

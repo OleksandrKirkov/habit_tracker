@@ -4,6 +4,6 @@ namespace Core.Interfaces;
 
 public interface IUserAchievementRepository : IRepository<UserAcievement>
 {
-    Task<IEnumerable<UserAcievement>> GetByUserAsync(Guid userId);
-    Task<bool> ExistsAsync(Guid userId, Guid achievementId);
+    Task<IEnumerable<UserAcievement>> GetByUserAsync(int userId);
+    Task<bool> ExistsAsync(int userId, int achievementId);
 }

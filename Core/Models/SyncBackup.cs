@@ -6,16 +6,17 @@ namespace Core.Models
     public class SyncBackup
     {
         [Key]
-        public Guid Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [Required]
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        public User User { get; set; } = null!;
 
         [Column(TypeName = "bytea")]
-        public byte[] DataBlob { get; set; }
+        public byte[] DataBlob { get; set; } = null!;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

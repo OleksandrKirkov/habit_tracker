@@ -10,6 +10,7 @@ public interface IUnitOfWork : IDisposable
     IUserAchievementRepository UserAchievements { get; }
     ISyncBackupRepository SyncBackups { get; }
     IIntegrationRepository Integrations { get; }
+    IRefreshTokenRepository RefreshTokens { get; }
 
     Task<int> CompleteAsync();
 }

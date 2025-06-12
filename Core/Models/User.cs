@@ -24,6 +24,8 @@ namespace Core.Models
 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
+        public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+
         public ICollection<Habit> Habits { get; set; } = new List<Habit>();
 
         public ICollection<UserAcievement> UserAcievements { get; set; } = new List<UserAcievement>();

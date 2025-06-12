@@ -31,4 +31,7 @@ public class Repository<T> : IRepository<T> where T : class
 
     public void Update(T entity) =>
         _context.Entry(entity).State = EntityState.Modified;
+
+    public async Task<T?> SingleOrDefaultAsync(Expression<Func<T, bool>> predicate) =>
+        await _context.Set<T>().SingleOrDefaultAsync(predicate);
 }

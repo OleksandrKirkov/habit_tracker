@@ -19,6 +19,7 @@ public class UnitOfWork : IUnitOfWork
         UserAchievements = new UserAchievementRepository(_context);
         SyncBackups = new SyncBackupRepository(_context);
         Integrations = new IntegrationRepository(_context);
+        RefreshTokens = new RefreshTokenRepository(_context);
     }
 
     public IUserRepository Users { get; }
@@ -29,6 +30,8 @@ public class UnitOfWork : IUnitOfWork
     public IUserAchievementRepository UserAchievements { get; }
     public ISyncBackupRepository SyncBackups { get; }
     public IIntegrationRepository Integrations { get; }
+
+    public IRefreshTokenRepository RefreshTokens { get; }
 
     public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();
 

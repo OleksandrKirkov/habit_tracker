@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<UserAcievement> UserAcievements => Set<UserAcievement>();
     public DbSet<SyncBackup> SyncBackups => Set<SyncBackup>();
     public DbSet<Integration> Integrations => Set<Integration>();
+    public DbSet<RefreshToken> RefreshToken => Set<RefreshToken>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -65,6 +66,12 @@ public class AppDbContext : DbContext
             .HasIndex(u => u.Email)
             .IsUnique();
 
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.RefreshTokens)
+            .WithOne(rt => rt.User)
+            .HasForeignKey(rt => rt.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<Achievement>()
             .HasIndex(a => a.Code)
             .IsUnique();
@@ -76,5 +83,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<HabitLog>()
             .HasIndex(c => new { c.HabitId, c.LogDate })
             .IsUnique();
+
     }
 }

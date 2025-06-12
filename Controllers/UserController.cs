@@ -16,7 +16,7 @@ namespace Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByid(Guid id)
+        public async Task<IActionResult> GetByid(int id)
         {
             var user = await _users.GetByIdAsync(id);
             if (user == null) return NotFound();

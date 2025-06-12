@@ -27,7 +27,7 @@ namespace Controllers
         [HttpGet("user/{userId}")]
         [ProducesResponseType(typeof(IEnumerable<Habit>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetByUser(Guid userId)
+        public async Task<IActionResult> GetByUser(int userId)
         {
             var habits = await _habits.GetHabitsByUserAsync(userId);
             return Ok(habits);
@@ -41,7 +41,7 @@ namespace Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(IEnumerable<Habit>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetById(int id)
         {
             var habit = await _habits.GetByIdWithLogsAsync(id);
             if (habit == null) return NotFound();
@@ -70,7 +70,7 @@ namespace Controllers
         [HttpPost("{id}/archive")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Archive(Guid id)
+        public async Task<IActionResult> Archive(int id)
         {
             await _habits.ArchiveHabitAsync(id);
             return NoContent();
@@ -84,7 +84,7 @@ namespace Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(int id)
         {
             var success = await _habits.DeleteHabitAsync(id);
             if (!success) return NotFound();
@@ -100,7 +100,7 @@ namespace Controllers
         [HttpPatch("{id}/frequency")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateFrequency(Guid id, [FromBody] short frequency)
+        public async Task<IActionResult> UpdateFrequency(int id, [FromBody] short frequency)
         {
             var success = await _habits.UpdateFrequencyAsync(id, frequency);
             if (!success) return NotFound();
@@ -116,7 +116,7 @@ namespace Controllers
         [HttpPatch("{id}/reminder-time")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateReminderTime(Guid id, [FromBody] TimeSpan time)
+        public async Task<IActionResult> UpdateReminderTime(int id, [FromBody] TimeSpan time)
         {
             var success = await _habits.UpdateReminderTimeAsync(id, time);
             if (!success) return NotFound();
@@ -132,7 +132,7 @@ namespace Controllers
         [HttpPatch("{id}/reminder-mode")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateReminderMode(Guid id, [FromBody] string mode)
+        public async Task<IActionResult> UpdateReminderMode(int id, [FromBody] string mode)
         {
             var success = await _habits.UpdateReminderModeAsync(id, mode);
             if (!success) return NotFound();
@@ -148,7 +148,7 @@ namespace Controllers
         [HttpPatch("{id}/reminder-state")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> SetReminderState(Guid id, [FromBody] bool enabled)
+        public async Task<IActionResult> SetReminderState(int id, [FromBody] bool enabled)
         {
             var success = await _habits.SetReminderStateAsync(id, enabled);
             if (!success) return NotFound();

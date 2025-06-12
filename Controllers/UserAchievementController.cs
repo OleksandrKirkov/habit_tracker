@@ -15,7 +15,7 @@ namespace Controllers
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetByUser(Guid userId)
+        public async Task<IActionResult> GetByUser(int userId)
         {
             var achievement = await _service.GetByUserAsync(userId);
             return Ok(achievement);
@@ -32,8 +32,8 @@ namespace Controllers
 
         public class AssignRequest
         {
-            public Guid UserId { get; set; }
-            public Guid AchievementId { get; set; }
+            public int UserId { get; set; }
+            public int AchievementId { get; set; }
         }
     }
 }

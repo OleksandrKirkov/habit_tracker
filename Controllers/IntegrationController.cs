@@ -16,14 +16,14 @@ namespace Controllers
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetByUser(Guid userId)
+        public async Task<IActionResult> GetByUser(int userId)
         {
             var list = await _integrations.GetByUserAsync(userId);
             return Ok(list);
         }
 
         [HttpGet("user/{userId}/provider/{provider}")]
-        public async Task<IActionResult> GetByProvider(Guid userId, string provider)
+        public async Task<IActionResult> GetByProvider(int userId, string provider)
         {
             var integration = await _integrations.GetByProviderAsync(userId, provider);
             if (integration == null) return NotFound();

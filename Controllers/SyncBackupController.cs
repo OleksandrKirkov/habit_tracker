@@ -16,7 +16,7 @@ namespace Controllers
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetByUser(Guid userId)
+        public async Task<IActionResult> GetByUser(int userId)
         {
             var list = await _backups.GetByUserAsync(userId);
             return Ok(list);

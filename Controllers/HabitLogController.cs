@@ -16,14 +16,14 @@ namespace Controllers
         }
 
         [HttpGet("habit/{habitId}")]
-        public async Task<IActionResult> GetByHabit(Guid habitId)
+        public async Task<IActionResult> GetByHabit(int habitId)
         {
             var logs = await _logs.GetLogsByHabitAsync(habitId);
             return Ok(logs);
         }
 
         [HttpPost("{habitId}/log")]
-        public async Task<IActionResult> Log(Guid habitId, [FromBody] LogRequest request)
+        public async Task<IActionResult> Log(int habitId, [FromBody] LogRequest request)
         {
             var alreadyLogged = await _logs.AlreadyLoggedAsync(habitId, request.Date);
             if (alreadyLogged)

@@ -1,5 +1,6 @@
 using Core.DTO.Habits;
 using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -8,6 +9,7 @@ namespace Controllers
     /// <summary>
     /// Controller for managing user habits.
     /// </summary>
+    [Authorize]
     [ApiController]
     [Route("api/habit")]
     public class HabitController : ControllerBase
@@ -51,7 +53,7 @@ namespace Controllers
         /// <summary>
         /// Create a new habit for a user.
         /// </summary>
-        /// <param name="id">The habit creation request data.</param>
+        /// <param name="request">The habit creation request data.</param>
         /// <returns>The newly created habit.</returns>
         [HttpPost]
         [ProducesResponseType(typeof(Habit), StatusCodes.Status201Created)]

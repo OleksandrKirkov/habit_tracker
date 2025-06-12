@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Core.DTO.Habits;
 using Core.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -21,17 +22,17 @@ namespace Controllers
             _habits = habits;
         }
 
+        private int GetUserId() => int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
         /// <summary>
         /// Get all habits of a specific user.
         /// </summary>
-        /// <param name="userId">The unique identifier of the user.</param>
         /// <returns>A list of the user's habits.</returns>
-        [HttpGet("user/{userId}")]
+        [HttpGet("my")]
         [ProducesResponseType(typeof(IEnumerable<Habit>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetByUser(int userId)
+        public async Task<IActionResult> GetByUser()
         {
-            var habits = await _habits.GetHabitsByUserAsync(userId);
+            var habits = await _habits.GetHabitsByUserAsync(GetUserId());
             return Ok(habits);
         }
 
@@ -41,12 +42,12 @@ namespace Controllers
         /// <param name="id">The unique identifier of the habit.</param>
         /// <returns>The habit with related logs, if found.</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(IEnumerable<Habit>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Habit), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
             var habit = await _habits.GetByIdWithLogsAsync(id);
-            if (habit == null) return NotFound();
+            if (habit == null || habit.UserId != GetUserId()) return NotFound();
             return Ok(habit);
         }
 
@@ -60,6 +61,7 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] CreateHabitRequest request)
         {
+            request.UserId = GetUserId();
             var created = await _habits.CreateHabitAsync(request);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
@@ -74,6 +76,8 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Archive(int id)
         {
+            var habit = await _habits.GetByIdWithLogsAsync(id);
+            if (habit == null || habit.UserId != GetUserId()) return NotFound();
             await _habits.ArchiveHabitAsync(id);
             return NoContent();
         }
@@ -88,9 +92,10 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
+            var habit = await _habits.GetByIdWithLogsAsync(id);
+            if (habit == null || habit.UserId != GetUserId()) return NotFound();
             var success = await _habits.DeleteHabitAsync(id);
-            if (!success) return NotFound();
-            return NoContent();
+            return success ? NoContent() : NotFound();
         }
 
         /// <summary>
@@ -104,9 +109,10 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateFrequency(int id, [FromBody] int frequency)
         {
+            var habit = await _habits.GetByIdWithLogsAsync(id);
+            if (habit == null || habit.UserId != GetUserId()) return NotFound();
             var success = await _habits.UpdateFrequencyAsync(id, frequency);
-            if (!success) return NotFound();
-            return NoContent();
+            return success ? NoContent() : NotFound();
         }
 
         /// <summary>
@@ -120,9 +126,10 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateReminderTime(int id, [FromBody] TimeSpan time)
         {
+            var habit = await _habits.GetByIdWithLogsAsync(id);
+            if (habit == null || habit.UserId != GetUserId()) return NotFound();
             var success = await _habits.UpdateReminderTimeAsync(id, time);
-            if (!success) return NotFound();
-            return NoContent();
+            return success ? NoContent() : NotFound();
         }
 
         /// <summary>
@@ -136,9 +143,10 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateReminderMode(int id, [FromBody] string mode)
         {
+            var habit = await _habits.GetByIdWithLogsAsync(id);
+            if (habit == null || habit.UserId != GetUserId()) return NotFound();
             var success = await _habits.UpdateReminderModeAsync(id, mode);
-            if (!success) return NotFound();
-            return NoContent();
+            return success ? NoContent() : NotFound();
         }
 
         /// <summary>
@@ -152,9 +160,10 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> SetReminderState(int id, [FromBody] bool enabled)
         {
+            var habit = await _habits.GetByIdWithLogsAsync(id);
+            if (habit == null || habit.UserId != GetUserId()) return NotFound();
             var success = await _habits.SetReminderStateAsync(id, enabled);
-            if (!success) return NotFound();
-            return NoContent();
+            return success ? NoContent() : NotFound();
         }
 
     }

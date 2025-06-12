@@ -6,13 +6,14 @@ namespace Core.Models
     public class HabitLog
     {
         [Key]
-        public Guid Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [Required]
-        public Guid HabitId { get; set; }
+        public int HabitId { get; set; }
 
         [ForeignKey(nameof(HabitId))]
-        public Habit Habit { get; set; }
+        public Habit Habit { get; set; } = null!;
 
         [Required]
         [Column(TypeName = "date")]

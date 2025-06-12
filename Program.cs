@@ -1,15 +1,24 @@
 using System.Reflection;
+using Core.Configuration;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<AuthOptions>(
+    builder.Configuration.GetSection(AuthOptions.Section)
+);
+
+builder.Services.AddSingleton(sp =>
+    sp.GetRequiredService<IOptions<AuthOptions>>().Value);
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

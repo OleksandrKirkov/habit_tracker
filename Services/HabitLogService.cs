@@ -5,9 +5,9 @@ namespace Services;
 
 public interface IHabitLogService
 {
-    Task<IEnumerable<HabitLog>> GetLogsByHabitAsync(Guid habitId);
-    Task<HabitLog> LogAsync(Guid habitId, DateTime date, int? value);
-    Task<bool> AlreadyLoggedAsync(Guid habitId, DateTime date);
+    Task<IEnumerable<HabitLog>> GetLogsByHabitAsync(int habitId);
+    Task<HabitLog> LogAsync(int habitId, DateTime date, int? value);
+    Task<bool> AlreadyLoggedAsync(int habitId, DateTime date);
 }
 
 public class HabitLogService : IHabitLogService
@@ -19,19 +19,18 @@ public class HabitLogService : IHabitLogService
         _uow = uow;
     }
 
-    public async Task<IEnumerable<HabitLog>> GetLogsByHabitAsync(Guid habitId)
+    public async Task<IEnumerable<HabitLog>> GetLogsByHabitAsync(int habitId)
     {
         return await _uow.HabitLogs.GetByHabitAsync(habitId);
     }
 
-    public async Task<HabitLog> LogAsync(Guid habitId, DateTime date, int? value)
+    public async Task<HabitLog> LogAsync(int habitId, DateTime date, int? value)
     {
         var existing = await _uow.HabitLogs.GetByHabitAndDateAsync(habitId, date);
         if (existing != null) return existing;
 
         var log = new HabitLog
         {
-            Id = Guid.NewGuid(),
             HabitId = habitId,
             LogDate = date.Date,
             Value = value,
@@ -44,7 +43,7 @@ public class HabitLogService : IHabitLogService
         return log;
     }
 
-    public async Task<bool> AlreadyLoggedAsync(Guid habitId, DateTime date)
+    public async Task<bool> AlreadyLoggedAsync(int habitId, DateTime date)
     {
         var existing = await _uow.HabitLogs.GetByHabitAndDateAsync(habitId, date);
         return existing != null;

@@ -5,8 +5,8 @@ namespace Services;
 
 public interface IUserAchievementService
 {
-    Task<IEnumerable<UserAcievement>> GetByUserAsync(Guid userId);
-    Task<UserAcievement> AssignAsync(Guid userId, Guid achievementId);
+    Task<IEnumerable<UserAcievement>> GetByUserAsync(int userId);
+    Task<UserAcievement> AssignAsync(int userId, int achievementId);
 }
 
 public class UserAchievementService : IUserAchievementService
@@ -18,19 +18,18 @@ public class UserAchievementService : IUserAchievementService
         _uow = uow;
     }
 
-    public async Task<IEnumerable<UserAcievement>> GetByUserAsync(Guid userId)
+    public async Task<IEnumerable<UserAcievement>> GetByUserAsync(int userId)
     {
         return await _uow.UserAchievements.GetByUserAsync(userId);
     }
 
-    public async Task<UserAcievement> AssignAsync(Guid userId, Guid achievementId)
+    public async Task<UserAcievement> AssignAsync(int userId, int achievementId)
     {
         var exists = await _uow.UserAchievements.ExistsAsync(userId, achievementId);
         if (exists) return null!;
 
         var entity = new UserAcievement
         {
-            Id = Guid.NewGuid(),
             UserId = userId,
             AchievementId = achievementId,
             UnlockedAt = DateTime.UtcNow

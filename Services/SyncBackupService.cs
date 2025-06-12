@@ -5,7 +5,7 @@ namespace Services;
 
 public interface ISyncBackupService
 {
-    Task<IEnumerable<SyncBackup>> GetByUserAsync(Guid userId);
+    Task<IEnumerable<SyncBackup>> GetByUserAsync(int userId);
     Task<SyncBackup> CreateAsync(SyncBackup backup);
 }
 
@@ -18,7 +18,7 @@ public class SyncBackupService : ISyncBackupService
         _uow = uow;
     }
 
-    public async Task<IEnumerable<SyncBackup>> GetByUserAsync(Guid userId)
+    public async Task<IEnumerable<SyncBackup>> GetByUserAsync(int userId)
     {
         return await _uow.SyncBackups.GetByUserAsync(userId);
     }

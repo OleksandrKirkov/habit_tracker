@@ -6,15 +6,15 @@ namespace Services;
 
 public interface IHabitService
 {
-    Task<IEnumerable<Habit>> GetHabitsByUserAsync(Guid userId);
-    Task<Habit> GetByIdWithLogsAsync(Guid id);
+    Task<IEnumerable<Habit>> GetHabitsByUserAsync(int userId);
+    Task<Habit> GetByIdWithLogsAsync(int id);
     Task<Habit> CreateHabitAsync(CreateHabitRequest request);
-    Task ArchiveHabitAsync(Guid id);
-    Task<bool> DeleteHabitAsync(Guid id);
-    Task<bool> UpdateFrequencyAsync(Guid id, short frequency);
-    Task<bool> UpdateReminderTimeAsync(Guid id, TimeSpan? reminderTime);
-    Task<bool> UpdateReminderModeAsync(Guid id, string reminderMode);
-    Task<bool> SetReminderStateAsync(Guid id, bool enabled);
+    Task ArchiveHabitAsync(int id);
+    Task<bool> DeleteHabitAsync(int id);
+    Task<bool> UpdateFrequencyAsync(int id, short frequency);
+    Task<bool> UpdateReminderTimeAsync(int id, TimeSpan? reminderTime);
+    Task<bool> UpdateReminderModeAsync(int id, string reminderMode);
+    Task<bool> SetReminderStateAsync(int id, bool enabled);
 }
 
 public class HabitService : IHabitService
@@ -26,12 +26,12 @@ public class HabitService : IHabitService
         _uow = uow;
     }
 
-    public async Task<IEnumerable<Habit>> GetHabitsByUserAsync(Guid userId)
+    public async Task<IEnumerable<Habit>> GetHabitsByUserAsync(int userId)
     {
         return await _uow.Habits.GetHabitsByUserAsync(userId);
     }
 
-    public async Task<Habit> GetByIdWithLogsAsync(Guid id)
+    public async Task<Habit> GetByIdWithLogsAsync(int id)
     {
         return await _uow.Habits.GetByIdWithLogsAsync(id);
     }
@@ -40,7 +40,6 @@ public class HabitService : IHabitService
     {
         var habit = new Habit
         {
-            Id = Guid.NewGuid(),
             UserId = request.UserId,
             Title = request.Title,
             Color = request.Color,
@@ -58,7 +57,7 @@ public class HabitService : IHabitService
         return habit;
     }
 
-    public async Task ArchiveHabitAsync(Guid id)
+    public async Task ArchiveHabitAsync(int id)
     {
         var habit = await _uow.Habits.GetByIdAsync(id);
         if (habit == null) return;
@@ -68,7 +67,7 @@ public class HabitService : IHabitService
         await _uow.CompleteAsync();
     }
 
-    public async Task<bool> DeleteHabitAsync(Guid id)
+    public async Task<bool> DeleteHabitAsync(int id)
     {
         var habit = await _uow.Habits.GetByIdAsync(id);
         if (habit == null) return false;
@@ -78,7 +77,7 @@ public class HabitService : IHabitService
         return true;
     }
 
-    public async Task<bool> UpdateFrequencyAsync(Guid id, short frequency)
+    public async Task<bool> UpdateFrequencyAsync(int id, short frequency)
     {
         var habit = await _uow.Habits.GetByIdAsync(id);
         if (habit == null) return false;
@@ -90,7 +89,7 @@ public class HabitService : IHabitService
         return true;
     }
 
-    public async Task<bool> UpdateReminderTimeAsync(Guid id, TimeSpan? reminderTime)
+    public async Task<bool> UpdateReminderTimeAsync(int id, TimeSpan? reminderTime)
     {
         var habit = await _uow.Habits.GetByIdAsync(id);
         if (habit == null) return false;
@@ -102,7 +101,7 @@ public class HabitService : IHabitService
         return true;
     }
 
-    public async Task<bool> UpdateReminderModeAsync(Guid id, string reminderMode)
+    public async Task<bool> UpdateReminderModeAsync(int id, string reminderMode)
     {
         var habit = await _uow.Habits.GetByIdAsync(id);
         if (habit == null) return false;
@@ -114,7 +113,7 @@ public class HabitService : IHabitService
         return true;
     }
 
-    public async Task<bool> SetReminderStateAsync(Guid id, bool enabled)
+    public async Task<bool> SetReminderStateAsync(int id, bool enabled)
     {
         var habit = await _uow.Habits.GetByIdAsync(id);
         if (habit == null) return false;

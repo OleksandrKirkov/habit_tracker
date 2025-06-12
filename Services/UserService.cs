@@ -6,7 +6,7 @@ namespace Services;
 public interface IUserService
 {
     Task<User> GetByEmailAsync(string email);
-    Task<User> GetByIdAsync(Guid id);
+    Task<User> GetByIdAsync(int id);
     Task<bool> EmailExistsAsync(string email);
     Task<User> CreateUserAsync(User user);
 }
@@ -25,7 +25,7 @@ public class UserService : IUserService
         return await _uow.Users.GetByEmailAsync(email);
     }
 
-    public async Task<User?> GetByIdAsync(Guid id)
+    public async Task<User?> GetByIdAsync(int id)
     {
         return await _uow.Users.GetByIdAsync(id);
     }

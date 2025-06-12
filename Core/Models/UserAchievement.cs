@@ -6,19 +6,20 @@ namespace Core.Models
     public class UserAcievement
     {
         [Key]
-        public Guid Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [Required]
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        public User User { get; set; } = null!;
 
         [Required]
-        public Guid AchievementId { get; set; }
+        public int AchievementId { get; set; }
 
         [ForeignKey(nameof(AchievementId))]
-        public Achievement Achievement { get; set; }
+        public Achievement Achievement { get; set; } = null!;
 
         public DateTime UnlockedAt { get; set; } = DateTime.UtcNow;
     }

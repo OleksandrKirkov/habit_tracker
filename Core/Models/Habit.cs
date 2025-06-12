@@ -6,20 +6,21 @@ namespace Core.Models
     public class Habit
     {
         [Key]
-        public Guid Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [Required]
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        public User User { get; set; } = null!;
 
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 
         public string Color { get; set; } = "#000000";
 
-        public string Icon { get; set; }
+        public string Icon { get; set; } = null!;
 
         [Required]
         [Range(1, 7)]
@@ -27,13 +28,13 @@ namespace Core.Models
 
         [Required]
         [EnumDataType(typeof(HabitType))]
-        public string Type { get; set; }
+        public string Type { get; set; } = null!;
 
         [Column(TypeName = "time")]
         public TimeSpan? ReminderTime { get; set; }
 
         [EnumDataType(typeof(ReminderMode))]
-        public string ReminderMode { get; set; }
+        public string ReminderMode { get; set; } = null!;
 
         public bool IsArchived { get; set; } = false;
 

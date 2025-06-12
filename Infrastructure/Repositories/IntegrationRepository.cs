@@ -9,14 +9,14 @@ namespace Infrastructure.Repositories
     {
         public IntegrationRepository(AppDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Integration>> GetByUserAsync(Guid userId)
+        public async Task<IEnumerable<Integration>> GetByUserAsync(int userId)
         {
             return await _context.Integrations
                 .Where(i => i.UserId == userId)
                 .ToListAsync();
         }
 
-        public async Task<Integration?> GetByUserAndProviderAsync(Guid userId, string provider)
+        public async Task<Integration?> GetByUserAndProviderAsync(int userId, string provider)
         {
             return await _context.Integrations
                 .FirstOrDefaultAsync(i => i.UserId == userId && i.Provider == provider);

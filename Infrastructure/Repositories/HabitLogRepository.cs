@@ -9,20 +9,20 @@ public class HabitLogRepository : Repository<HabitLog>, IHabitLogRepository
 {
     public HabitLogRepository(AppDbContext context) : base(context) { }
 
-    public async Task<HabitLog?> GetByHabitAndDateAsync(Guid habitId, DateTime date)
+    public async Task<HabitLog?> GetByHabitAndDateAsync(int habitId, DateTime date)
     {
         return await _context.HabitLogs
             .FirstOrDefaultAsync(c => c.HabitId == habitId && c.LogDate == date.Date);
     }
 
-    public async Task<IEnumerable<HabitLog>> GetByHabitAsync(Guid habitId)
+    public async Task<IEnumerable<HabitLog>> GetByHabitAsync(int habitId)
     {
         return await _context.HabitLogs
             .Where(c => c.HabitId == habitId)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<HabitLog>> GetByUserAsync(Guid userId)
+    public async Task<IEnumerable<HabitLog>> GetByUserAsync(int userId)
     {
         return await _context.HabitLogs
             .Include(c => c.Habit)

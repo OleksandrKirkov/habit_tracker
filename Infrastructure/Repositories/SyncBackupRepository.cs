@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories
     {
         public SyncBackupRepository(AppDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<SyncBackup>> GetByUserAsync(Guid userId)
+        public async Task<IEnumerable<SyncBackup>> GetByUserAsync(int userId)
         {
             return await _context.SyncBackups
                 .Where(sb => sb.UserId == userId)

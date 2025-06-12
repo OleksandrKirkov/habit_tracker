@@ -9,14 +9,14 @@ public class HabitRepository : Repository<Habit>, IHabitRepository
 {
     public HabitRepository(AppDbContext context) : base(context) { }
 
-    public async Task<IEnumerable<Habit>> GetHabitsByUserAsync(Guid userId)
+    public async Task<IEnumerable<Habit>> GetHabitsByUserAsync(int userId)
     {
         return await _context.Habits
             .Where(h => h.UserId == userId)
             .ToListAsync();
     }
 
-    public async Task<Habit?> GetByIdWithLogsAsync(Guid id)
+    public async Task<Habit?> GetByIdWithLogsAsync(int id)
     {
         return await _context.Habits
             .Include(h => h.HabitLogs)

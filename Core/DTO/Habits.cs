@@ -21,7 +21,7 @@ namespace Core.DTO.Habits
         public string Icon { get; set; } = null!;
 
         [Range(1, 7)]
-        public short Frequency { get; set; }
+        public int Frequency { get; set; }
 
         [EnumDataType(typeof(HabitType))]
         public string Type { get; set; } = null!;

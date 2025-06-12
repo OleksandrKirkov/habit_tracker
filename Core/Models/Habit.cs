@@ -24,7 +24,7 @@ namespace Core.Models
 
         [Required]
         [Range(1, 7)]
-        public short Frequency { get; set; }
+        public int Frequency { get; set; }
 
         [Required]
         [EnumDataType(typeof(HabitType))]

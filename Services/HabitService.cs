@@ -11,7 +11,7 @@ public interface IHabitService
     Task<Habit> CreateHabitAsync(CreateHabitRequest request);
     Task ArchiveHabitAsync(int id);
     Task<bool> DeleteHabitAsync(int id);
-    Task<bool> UpdateFrequencyAsync(int id, short frequency);
+    Task<bool> UpdateFrequencyAsync(int id, int frequency);
     Task<bool> UpdateReminderTimeAsync(int id, TimeSpan? reminderTime);
     Task<bool> UpdateReminderModeAsync(int id, string reminderMode);
     Task<bool> SetReminderStateAsync(int id, bool enabled);
@@ -77,7 +77,7 @@ public class HabitService : IHabitService
         return true;
     }
 
-    public async Task<bool> UpdateFrequencyAsync(int id, short frequency)
+    public async Task<bool> UpdateFrequencyAsync(int id, int frequency)
     {
         var habit = await _uow.Habits.GetByIdAsync(id);
         if (habit == null) return false;

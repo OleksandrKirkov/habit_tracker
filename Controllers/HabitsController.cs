@@ -100,7 +100,7 @@ namespace Controllers
         [HttpPatch("{id}/frequency")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateFrequency(int id, [FromBody] short frequency)
+        public async Task<IActionResult> UpdateFrequency(int id, [FromBody] int frequency)
         {
             var success = await _habits.UpdateFrequencyAsync(id, frequency);
             if (!success) return NotFound();

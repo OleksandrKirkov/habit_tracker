@@ -15,9 +15,9 @@ namespace Controllers
     [Route("api/habit")]
     public class HabitController : ControllerBase
     {
-        private readonly HabitService _habits;
+        private readonly IHabitService _habits;
 
-        public HabitController(HabitService habits)
+        public HabitController(IHabitService habits)
         {
             _habits = habits;
         }
@@ -61,9 +61,8 @@ namespace Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] CreateHabitRequest request)
         {
-            request.UserId = GetUserId();
-            var created = await _habits.CreateHabitAsync(request);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            var created = await _habits.CreateHabitAsync(request, GetUserId());
+            return CreatedAtAction(nameof(GetById), new { id = GetUserId() }, created);
         }
 
         /// <summary>

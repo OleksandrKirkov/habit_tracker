@@ -1,39 +1,60 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
-namespace Controllers
+namespace Controllers;
+
+/// <summary>
+/// Controller for assigning and retrieving user achievements.
+/// </summary>
+[Authorize]
+[ApiController]
+[Route("api/user-achievements")]
+[Produces("application/json")]
+public class UserAchievementController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UserAchievementController : ControllerBase
+    private readonly IUserAchievementService _service;
+
+    public UserAchievementController(IUserAchievementService service)
     {
-        private readonly IUserAchievementService _service;
+        _service = service;
+    }
 
-        public UserAchievementController(IUserAchievementService service)
-        {
-            _service = service;
-        }
+    private int GetUserId() => int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetByUser(int userId)
-        {
-            var achievement = await _service.GetByUserAsync(userId);
-            return Ok(achievement);
-        }
+    /// <summary>
+    /// Get all achievements assigned to the authenticated user.
+    /// </summary>
+    /// <returns>List of user achievements.</returns>
+    [HttpGet("my")]
+    [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetByUser()
+    {
+        int userId = GetUserId();
+        var achievement = await _service.GetByUserAsync(userId);
+        return Ok(achievement);
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Assign([FromBody] AssignRequest request)
-        {
-            var result = await _service.AssignAsync(request.UserId, request.AchievementId);
-            if (result == null)
-                return Conflict("Achievement already assigned.");
-            return Ok(result);
-        }
+    /// <summary>
+    /// Assign an achievement to the authenticated user.
+    /// </summary>
+    /// <param name="request">Achievement assignment data</param>
+    /// <returns>Assigned achievement if successful.</returns>
+    [HttpPost]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> Assign([FromBody] AssignRequest request)
+    {
+        int userId = GetUserId();
+        var result = await _service.AssignAsync(userId, request.AchievementId);
+        if (result == null)
+            return Conflict("Achievement already assigned.");
+        return Ok(result);
+    }
 
-        public class AssignRequest
-        {
-            public int UserId { get; set; }
-            public int AchievementId { get; set; }
-        }
+    public class AssignRequest
+    {
+        public int AchievementId { get; set; }
     }
 }

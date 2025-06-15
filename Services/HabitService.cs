@@ -1,6 +1,5 @@
 using Core.DTO.Habits;
-using Core.Interfaces;
-using Core.Models;
+using Core.Interfaces; using Core.Models;
 
 namespace Services;
 
@@ -8,7 +7,7 @@ public interface IHabitService
 {
     Task<IEnumerable<Habit>> GetHabitsByUserAsync(int userId);
     Task<Habit> GetByIdWithLogsAsync(int id);
-    Task<Habit> CreateHabitAsync(CreateHabitRequest request);
+    Task<Habit> CreateHabitAsync(CreateHabitRequest request, int UserId);
     Task ArchiveHabitAsync(int id);
     Task<bool> DeleteHabitAsync(int id);
     Task<bool> UpdateFrequencyAsync(int id, int frequency);
@@ -36,11 +35,11 @@ public class HabitService : IHabitService
         return await _uow.Habits.GetByIdWithLogsAsync(id);
     }
 
-    public async Task<Habit> CreateHabitAsync(CreateHabitRequest request)
+    public async Task<Habit> CreateHabitAsync(CreateHabitRequest request, int UserId)
     {
         var habit = new Habit
         {
-            UserId = request.UserId,
+            UserId = UserId,
             Title = request.Title,
             Color = request.Color,
             Icon = request.Icon,

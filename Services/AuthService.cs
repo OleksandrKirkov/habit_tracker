@@ -43,7 +43,8 @@ public class AuthService : IAuthService
         {
             Email = request.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-            Name = request.Name ?? "User"
+            Name = request.Name ?? "User",
+            AvatarUrl = ""
         };
 
         await _uow.Users.AddAsync(user);

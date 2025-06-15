@@ -5,9 +5,9 @@ namespace Services;
 
 public interface IHabitLogService
 {
-    Task<IEnumerable<HabitLog>> GetLogsByHabitAsync(int habitId);
-    Task<HabitLog> LogAsync(int habitId, DateTime date, int? value);
-    Task<bool> AlreadyLoggedAsync(int habitId, DateTime date);
+    Task<IEnumerable<HabitLog>> GetLogsByHabitAsync(int habitId, int userId);
+    Task<HabitLog> LogAsync(int habitId, int userId, DateTime date, int? value);
+    Task<bool> AlreadyLoggedAsync(int habitId, int userId, DateTime date);
 }
 
 public class HabitLogService : IHabitLogService
@@ -19,13 +19,21 @@ public class HabitLogService : IHabitLogService
         _uow = uow;
     }
 
-    public async Task<IEnumerable<HabitLog>> GetLogsByHabitAsync(int habitId)
+    public async Task<IEnumerable<HabitLog>> GetLogsByHabitAsync(int habitId, int userId)
     {
+        var habit = await _uow.Habits.GetByIdAsync(habitId);
+        if (habit == null || habit.UserId != userId)
+            return Enumerable.Empty<HabitLog>();
+
         return await _uow.HabitLogs.GetByHabitAsync(habitId);
     }
 
-    public async Task<HabitLog> LogAsync(int habitId, DateTime date, int? value)
+    public async Task<HabitLog> LogAsync(int habitId, int userId, DateTime date, int? value)
     {
+        var habit = await _uow.Habits.GetByIdAsync(habitId);
+        if (habit == null || habit.UserId != userId)
+            throw new UnauthorizedAccessException("Habit does not belong to the user.");
+
         var existing = await _uow.HabitLogs.GetByHabitAndDateAsync(habitId, date);
         if (existing != null) return existing;
 
@@ -43,8 +51,12 @@ public class HabitLogService : IHabitLogService
         return log;
     }
 
-    public async Task<bool> AlreadyLoggedAsync(int habitId, DateTime date)
+    public async Task<bool> AlreadyLoggedAsync(int habitId, int userId, DateTime date)
     {
+        var habit = await _uow.Habits.GetByIdAsync(habitId);
+        if (habit == null || habit.UserId != userId)
+            return false;
+
         var existing = await _uow.HabitLogs.GetByHabitAndDateAsync(habitId, date);
         return existing != null;
     }

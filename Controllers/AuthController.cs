@@ -42,9 +42,9 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     [ProducesResponseType(typeof(TokenResponse), 200)]
     [ProducesResponseType(typeof(string), 400)]
-    public async Task<IActionResult> Login([FromBody] RegisterRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var token = await _authService.RegisterAsync(request);
+        var token = await _authService.LoginAsync(request);
         return Ok(token);
     }
 

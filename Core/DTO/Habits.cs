@@ -6,9 +6,6 @@ namespace Core.DTO.Habits
     public class CreateHabitRequest
     {
         [Required]
-        public int UserId { get; set; }
-
-        [Required]
         [MinLength(1)]
         public string Title { get; set; } = null!;
 

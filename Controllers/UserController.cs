@@ -44,7 +44,6 @@ public class UserController : ControllerBase
     /// <param name="email">Email to check.</param>
     [HttpGet("exists")]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
-    [HttpGet("exists")]
     public async Task<IActionResult> CheckEmail([FromQuery] string email)
     {
         var exists = await _users.EmailExistsAsync(email);

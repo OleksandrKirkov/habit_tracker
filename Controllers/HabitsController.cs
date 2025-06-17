@@ -101,16 +101,16 @@ namespace Controllers
         /// Update the frequency of a habit.
         /// </summary>
         /// <param name="id">The unique identifier of the habit.</param>
-        /// <param name="frequency">New frequency value (1-7).</param>
+        /// <param name="request">New frequency value (1-7).</param>
         /// <returns>No content if deletion was successful.</returns>
         [HttpPatch("{id}/frequency")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateFrequency(int id, [FromBody] int frequency)
+        public async Task<IActionResult> UpdateFrequency(int id, [FromBody] UpdateHabitFrequencyRequest request)
         {
             var habit = await _habits.GetByIdWithLogsAsync(id);
             if (habit == null || habit.UserId != GetUserId()) return NotFound();
-            var success = await _habits.UpdateFrequencyAsync(id, frequency);
+            var success = await _habits.UpdateFrequencyAsync(id, request.Frequency);
             return success ? NoContent() : NotFound();
         }
 
@@ -118,16 +118,16 @@ namespace Controllers
         /// Update the reminder time of a habit.
         /// </summary>
         /// <param name="id">The unique identifier of the habit.</param>
-        /// <param name="time">New reminder time or null to remove it.</param>
+        /// <param name="request">New reminder time or null to remove it.</param>
         /// <returns>No content if update was successful.</returns>
         [HttpPatch("{id}/reminder-time")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateReminderTime(int id, [FromBody] TimeSpan time)
+        public async Task<IActionResult> UpdateReminderTime(int id, [FromBody] UpdateReminderTime request)
         {
             var habit = await _habits.GetByIdWithLogsAsync(id);
             if (habit == null || habit.UserId != GetUserId()) return NotFound();
-            var success = await _habits.UpdateReminderTimeAsync(id, time);
+            var success = await _habits.UpdateReminderTimeAsync(id, request.Time);
             return success ? NoContent() : NotFound();
         }
 
@@ -135,16 +135,16 @@ namespace Controllers
         /// Update the reminder mode of a habit.
         /// </summary>
         /// <param name="id">The unique identifier of the habit.</param>
-        /// <param name="mode">New reminder mode (e.g., "daily", "weekly", or null).</param>
+        /// <param name="request">New reminder mode (e.g., "daily", "weekly", or null).</param>
         /// <returns>No content if update was successful.</returns>
         [HttpPatch("{id}/reminder-mode")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateReminderMode(int id, [FromBody] string mode)
+        public async Task<IActionResult> UpdateReminderMode(int id, [FromBody] UpdateReminderMode request)
         {
             var habit = await _habits.GetByIdWithLogsAsync(id);
             if (habit == null || habit.UserId != GetUserId()) return NotFound();
-            var success = await _habits.UpdateReminderModeAsync(id, mode);
+            var success = await _habits.UpdateReminderModeAsync(id, request.Mode);
             return success ? NoContent() : NotFound();
         }
 
@@ -152,16 +152,16 @@ namespace Controllers
         /// Enable or disable reminders for a habit.
         /// </summary>
         /// <param name="id">The unique identifier of the habit.</param>
-        /// <param name="enabled">True to enable reminders, false to disable.</param>
+        /// <param name="request">True to enable reminders, false to disable.</param>
         /// <returns>No content if update was successful.</returns>
         [HttpPatch("{id}/reminder-state")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> SetReminderState(int id, [FromBody] bool enabled)
+        public async Task<IActionResult> SetReminderState(int id, [FromBody] UpdateReminderState request)
         {
             var habit = await _habits.GetByIdWithLogsAsync(id);
             if (habit == null || habit.UserId != GetUserId()) return NotFound();
-            var success = await _habits.SetReminderStateAsync(id, enabled);
+            var success = await _habits.SetReminderStateAsync(id, request.Enabled);
             return success ? NoContent() : NotFound();
         }
 

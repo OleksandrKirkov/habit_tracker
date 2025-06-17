@@ -14,9 +14,9 @@ namespace Controllers;
 [Produces("application/json")]
 public class HabitLogController : ControllerBase
 {
-    private readonly HabitLogService _logs;
+    private readonly IHabitLogService _logs;
 
-    public HabitLogController(HabitLogService logs)
+    public HabitLogController(IHabitLogService logs)
     {
         _logs = logs;
     }
@@ -43,7 +43,6 @@ public class HabitLogController : ControllerBase
     /// <param name="habitId">The ID of the habit.</param>
     /// <param name="request">Log date and optional value.</param>
     /// <returns>Create log entry.</returns>
-    [HttpGet("{habitId}/log")]
     [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(IEnumerable<string>), StatusCodes.Status409Conflict)]
     [HttpPost("{habitId}/log")]

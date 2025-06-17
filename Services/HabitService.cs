@@ -1,5 +1,6 @@
 using Core.DTO.Habits;
-using Core.Interfaces; using Core.Models;
+using Core.Interfaces;
+using Core.Models;
 
 namespace Services;
 
